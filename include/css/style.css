@@ -1,0 +1,179 @@
+/* CSS Document */
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+body{background-color: #fff;}
+:focus{outline-style: none;}
+.btn{border: none;}
+a{text-decoration: none;color:#000;}
+a:hover{text-decoration: none;}
+ul{list-style: none;}
+/****************************************************************/
+section{width: 1000px;margin:auto;}
+/**************************header/footer****************************/
+.test{
+	background-color: #999;
+}
+.header{padding: 0 0 14px 0;overflow: hidden;}
+	#header_bar{width:1000px;height:12px;background-image: url(../../include/images/header_bar.jpg);}
+	#logo{width: 110px;height:110px;float:left;margin-left: 45%;cursor: pointer;margin-top: 20px;}
+	.cart_wrapper{width: 260px;height:85px;float: right;margin-top: 45px;}
+	.cart{width: 260px;height:45px;background-image: url(../../include/images/cart_02.png);}
+	.login_wrapper{width:260px;}
+	.login_wrapper a{
+		width:128px;height:30px;
+		display: inline-block;
+		text-align: center;
+		margin-top:5px;
+		padding-top: 5px;
+
+	}
+	#login{border-left: 1px solid;}
+	#register{border-left: 1px solid;border-right: 1px solid;}
+
+#footer{height:170;padding-top: 50px;position: relative;background: #fff;}
+	.footer_main{height: 120px;background-color: #666;}
+	.goTop{
+		width: 60px;height: 60px;
+		border-radius: 50em;
+		background: #999;
+		position: absolute;
+		top: 20px;
+		left: 930px;
+	}
+/**************************nav****************************/
+#nav_wrapper ul { display:none;}
+.nav_wrapper{
+	width:250px;
+	height:440px;
+	border: 1px solid;
+	margin-bottom: 20px;
+	padding:15px 10px 20px 30px;
+
+}
+.nav_wrapper li{
+	text-decoration: none;
+	list-style-type: none;
+
+}
+.nav_wrapper li h4{
+	text-decoration: none;
+	background-image: url(../../include/images/product_dot.png);
+	background-repeat: no-repeat;
+	background-position: 0 3px;
+	padding:2px 0 5px 30px;
+	cursor:pointer;
+}
+
+.nav_wrapper li ul li{
+	background-image: url(../../include/images/product_samlldot.png);margin-left:10px;
+	background-repeat: no-repeat;
+	background-position: 0 5px;
+
+}
+.nav_wrapper li ul a{
+	padding:5px 0 5px 20px;
+	font-size: 12px;
+	color:#666;
+}
+
+/*.nav_wrapper ul a:hover {
+	background-color: #999;
+}*/
+.brand_nav_wrapper{
+	width:250px;
+	height:440px;
+	border: 1px solid;
+	margin-bottom: 20px;
+	padding:15px 10px 20px 30px;
+
+}
+.brand_nav_wrapper li{
+	text-decoration: none;
+	list-style-type: none;
+
+}
+.brand_nav_wrapper li h4{
+	text-decoration: none;
+	background-image: url(../../include/images/brand_dot.png);
+	background-repeat: no-repeat;
+	background-position: 0 3px;
+	padding:2px 0 5px 30px;
+	cursor:pointer;
+}
+
+/**************************index page****************************/
+#col-lg-12{
+	background: url(../../include/images/topbg.jpg) repeat-x;
+}
+.slick-prev{left:25px;z-index: 100;}
+.slick-next{right:25px;z-index: 100;}
+.slider div{padding: 0 5px;}
+.slick-dots li button:before{font-size: 32px;}
+.itemBlock_Wrapper{
+	min-height: 100px;
+	border:1px solid;
+	margin-right: -15px;
+	margin-bottom: 20px;
+	text-align: center;
+}
+.itemBlock_Wrapper::after{content: "";clear: both;display: block;}
+
+/**************************item_list page****************************/
+.categoryBanner{
+	height:160px;
+	background: #999;
+	clear: left;
+	text-align: center;
+	margin:10px -15px;
+}
+.merchandise_wrapper{
+	margin-right: -15px;
+}
+	.merchandise_wrapper .thumbnail{
+		width: 100%;
+		height:auto;
+	}
+	.imgOverflow{
+		width: 100%;
+		overflow: hidden;
+	}
+	.split_four{height:160px;line-height: 160px;}
+	.split_three{height:220px;line-height: 220px;}
+	.merchandise_wrapper img{width: 100%;}
+
+/**************************item_info page****************************/
+.mainPhoto_wrapper{height:470px;overflow:hidden;line-height: 470px;border: 1px solid #ccc;}
+	.mainPhoto_wrapper img{width: 100%;}
+.miniPhoto_wrapper{
+	display: inline-block;
+	width: 114px;
+	height:114px;
+	overflow: hidden;
+	margin-top: 15px;
+	line-height: 114px;
+	border: 1px solid #ccc;
+}
+	.miniPhoto_wrapper img{width: 100%;}
+.seller_info{padding: 15px;border:1px solid;margin-bottom: 15px;margin-right: -15px;}
+.item_logoWrapper{
+	width: 120px;
+	height: 120px;
+	line-height:120px;
+	overflow: hidden;
+	display: inline-block;
+	border:1px solid #ccc;
+}
+	.item_logoWrapper img{width:100%;}
+/**************************store_info page****************************/
+.store_logoWrapper{
+	width: 180px;
+	height: 180px;
+	line-height:180px;
+	overflow: hidden;
+	display: inline-block;
+	border:1px solid #ccc;
+}
+	.store_logoWrapper img{width:100%;}
