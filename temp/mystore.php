@@ -1,7 +1,8 @@
 <?
 	include_once("include/dbinclude.php");
+	include_once("temp/mystore/header.php");
 ?>
-	<? 
+	<?
 		$sql = "select * from store where user_id='".$_SESSION["user_id"]."'";
 		$result = mysqli_query($sqli,$sql);
 		$row = mysqli_fetch_array($result);
@@ -21,7 +22,7 @@
 		</form>
 	<?
 		}else{
-			header("Location: mystore_order.php");
+			include_once("temp/mystore/index.php");
 		} ?>
 	<div>
 	</div>
@@ -32,5 +33,5 @@
 			else
 				Dd("creat_store_form").submit();
 		}
-		
+
 	</script>

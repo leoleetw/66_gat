@@ -60,6 +60,19 @@
 		}
 		header("Location: ../mystore.php");
 	}
+	else if($action == "setting"){
+		$sql = "update store set store_name = '".mysqli_real_escape_string($sqli, trim($_POST["store_name"]))."' , store_introduce = '".mysqli_real_escape_string($sqli, trim($_POST["store_introduce"]))."' where store_id = '".$_POST["store_id"]."'";
+		mysqli_query($sqli,$sql);
+		$folder = "../update/store/";
+		if($_FILES["store_logo"]["name"]){
+			$sub_name = explode(".",$_FILES["store_logo"]["name"]);
+			$new_name = $_POST["store_id"].".".$sub_name[(count($sub_name)-1)];
+			move_uploaded_file($_FILES["store_logo"]["tmp_name"], $folder.$new_name);
+			$sql = "update store set store_logo ='".$new_name."' where store_id = '".$_POST["store_id"]."'";
+			mysqli_query($sqli,$sql);
+		}
+		header("Location: ../mystore_manage.php?action=setting");
+	}
 	else if($action == "XXX"){
 		$now = date("Y-m-d H:i:s");
 		$sql = "select b.* from user_attest b , user a  where a.user_id = b.user_id AND a.user_id='".$_SESSION["user_id"]."' AND b.mobile_auth = '".$_POST["mobile_attest"]."' AND (b.mobile_creat <= '".$now."' AND b.mobile_expired >= '".$now."')";

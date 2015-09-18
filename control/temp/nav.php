@@ -49,13 +49,39 @@
           
 		
           
-          <?php if($_SERVER['PHP_SELF']==_page."cate_manage.php" || $_SERVER['PHP_SELF']==_page."brand_manage.php"){ ?>
+          <?php if($_SERVER['PHP_SELF']==_page."news_manage.php" ||$_SERVER['PHP_SELF']==_page."recommend.php"||$_SERVER['PHP_SELF']==_page."cate_manage.php" || $_SERVER['PHP_SELF']==_page."brand_manage.php"|| $_SERVER['PHP_SELF']==_page."article_manage.php"){ ?>
             <li class="active">
           <?php }else{ ?>
           	<li>
           <?php } ?>
 	            <a href="#"><i class="fa fa-search fa-fw"></i> 网站管理<span class="fa arrow"></span></a>
 	            <ul class="nav nav-second-level">
+	            	<?php 
+	            		if($_SERVER['PHP_SELF']==_page."news_manage.php"){ 
+	            	?>
+	                <li>
+	                    <a class="active" href="news_manage.php"><i class="fa fa-users fa-fw"></i>最新消息</a>
+	                </li>
+	              <?php }
+	              			else{ ?>
+	              	<li>
+	                    <a href="news_manage.php"><i class="fa fa-users fa-fw"></i>最新消息</a>
+	                </li>
+	               <?php } ?>
+	               
+	               <?php 
+	            		if($_SERVER['PHP_SELF']==_page."recommend.php"){ 
+	            	?>
+	                <li>
+	                    <a class="active" href="recommend.php"><i class="fa fa-users fa-fw"></i>本周推荐</a>
+	                </li>
+	              <?php }
+	              			else{ ?>
+	              	<li>
+	                    <a href="recommend.php"><i class="fa fa-users fa-fw"></i>本周推荐</a>
+	                </li>
+	               <?php } ?>
+	            	
 	            	<?php 
 	            		if($_SERVER['PHP_SELF']==_page."cate_manage.php"){ 
 	            	?>
@@ -79,6 +105,19 @@
 	              			else{ ?>
 	              	<li>
 	                    <a href="brand_manage.php"><i class="fa fa-users fa-fw"></i>品牌管理</a>
+	                </li>
+	               <?php } ?>
+	               
+	               <?php 
+	            		if($_SERVER['PHP_SELF']==_page."article_manage.php"){ 
+	            	?>
+	                <li>
+	                    <a class="active" href="article_manage.php"><i class="fa fa-users fa-fw"></i>其余文章管理</a>
+	                </li>
+	              <?php }
+	              			else{ ?>
+	              	<li>
+	                    <a href="article_manage.php"><i class="fa fa-users fa-fw"></i>其余文章管理</a>
 	                </li>
 	               <?php } ?>
 	            </ul>
@@ -139,6 +178,15 @@
 							<?php }
 							else{ ?>
 								<a href="item_manage.php"><i class="fa fa-home fa-fw"></i> 商品管理</a>
+							<?php } ?>
+	          </li>
+	          
+	          <li>
+							<?php if($_SERVER['PHP_SELF']==_page."order_manage.php"){ ?>
+								<a class="active" href="order_manage.php"><i class="fa fa-dashboard fa-fw"></i> 订单管理</a>
+							<?php }
+							else{ ?>
+								<a href="order_manage.php"><i class="fa fa-home fa-fw"></i> 订单管理</a>
 							<?php } ?>
 	          </li>
         </ul>

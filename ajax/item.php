@@ -250,11 +250,18 @@
 	}
 	else if($action == "remove_collect"){
 		$sql = "delete from collect where item_id = '".$_POST["item_id"]."' AND user_id ='".$_SESSION["user_id"]."' ";
-		echo $sql;
 		if(!mysqli_query($sqli,$sql))
 			echo "1|";
 		else
 			echo "0|".$_POST["item_id"];
+		
+	}
+	else if($action == "remove_collect_all"){
+		$sql = "delete from collect where user_id ='".$_SESSION["user_id"]."' ";
+		if(!mysqli_query($sqli,$sql))
+			echo "1|";
+		else
+			echo "0|";
 		
 	}
 	else if($action == "qa"){
@@ -290,7 +297,16 @@
 	}
 	else if($action == "reply_qa"){
 		$now = date("Y-m-d H:i:s");
-		$sql = "update qa set a_content = '".mysqli_real_escape_string($sqli, trim($_POST["a_content"]))."' , a_creatdate = '".$now."' where qa_id = '".$_POST["qa_id"]."'";
+		$sql = "select * from qa where qa_id = ".$_POST["qa_id"];
+		$result = mysqli_query($sqli,$sql);
+		$row = mysqli_fetch_array($result);
+		$edit_state = false;
+		if($row["a_creatdate"]=='0000-00-00 00:00:00'){
+			$sql = "update qa set a_content = '".mysqli_real_escape_string($sqli, trim($_POST["a_content"]))."' , a_creatdate = '".$now."' where qa_id = '".$_POST["qa_id"]."'";
+			$edit_state = true;
+		}
+		else
+			$sql = "update qa set a_content = '".mysqli_real_escape_string($sqli, trim($_POST["a_content"]))."' , a_editdate = '".$now."' where qa_id = '".$_POST["qa_id"]."'";
 		if(!mysqli_query($sqli,$sql))
 			echo "1|";
 		else{
@@ -300,7 +316,10 @@
 			where a.qa_id = '".$_POST["qa_id"]."'";
 			$result = mysqli_query($sqli,$sql);
 			$row = mysqli_fetch_array($result);
-			$msg = "您向 ".$row["store_name"]." 店家的 ".$row["item_name"]." 商品发问的问题 对方已经给予回应罗，赶紧过去查看";
+			if(!$edit_state)
+				$msg = "您向 ".$row["store_name"]." 店家的 ".$row["item_name"]." 商品发问的问题 对方已经给予回应罗，赶紧过去查看";
+			else
+				$msg = "您向 ".$row["store_name"]." 店家的 ".$row["item_name"]." 商品发问的问题 对方已经编辑回应罗，赶紧过去查看";
 			send_msg('system' , $row['user_id'], $msg );
 			echo "0|";
 		}

@@ -38,6 +38,7 @@
 			else{
 				$_SESSION["user_id"]=$row["user_id"];
 				$_SESSION["user_name"]=$row["user_name"];
+				$_SESSION["user_nick"]=$row["user_nick"];
 				$sql = "update user set login_time = login_time+1 , last_time = '".date("Y-m-d H:i:s")."' , last_ip = '".getip()."' where user_id = ".$row["user_id"];
 				mysqli_query($sqli,$sql);
 				header("Location: ../index.php");

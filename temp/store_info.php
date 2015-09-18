@@ -2,7 +2,7 @@
 	include_once("include/dbinclude.php");
 ?>
 <div class="col-lg-12">
-	<div class="categoryBanner">这里是商店名称</div>
+	<div class="shopBanner">商店 SHOPS</div>
 </div>
 <?
 	include_once("temp/nav.php");
@@ -31,7 +31,7 @@
 			<div class="itemBlock_Wrapper">
 				<h4> —————最新入库—————</h4>
 				<?
-					$sql_newitem = "select * from item where store_id =".$_GET["store_id"]." order by shelves_date DESC limit 0,3";
+					$sql_newitem = "select * from item where store_id =".$_GET["store_id"]." and item_state = 1 order by shelves_date DESC limit 0,3";
 					$result_newitem = mysqli_query($sqli,$sql_newitem);
 					while($row_newitem = mysqli_fetch_array($result_newitem)){
 						$photo_img = explode("|",$row_newitem["item_photo"]);

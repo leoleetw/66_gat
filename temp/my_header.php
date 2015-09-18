@@ -1,20 +1,71 @@
 <?
 	include_once("include/dbinclude.php");
+	if($_SESSION["user_id"] == ''){
+		header("Location: login.php");
+	}
 ?>
 <div>
 	<?
-		$sql = "select a.* , b.store_id as store , c.sa_id as store_apply , c.sa_state from user a 
-		left join store b on b.user_id = a.user_id 
-		left join store_apply c on c.user_id = a.user_id 
+		$sql = "select a.* , b.store_id as store , c.sa_id as store_apply , c.sa_state from user a
+		left join store b on b.user_id = a.user_id
+		left join store_apply c on c.user_id = a.user_id
 		where a.user_id = ".$_SESSION["user_id"];
 		$result = mysqli_query($sqli,$sql);
 		$row = mysqli_fetch_array($result);
 	?>
 	<!--a href="attest.php">资料认证申请</a-->
-	<a href='#'>订单查询</a>
-	<a href="my_collect.php">我的收藏</a>
-	<a href='#'>帐户纪录</a>
-	<a href='my_setting.php'>帐户设定</a>
+<div class="col-lg-12">
+	<div class="row headerWrapper">
+		<div class="left_bar gat_blue"></div>
+		<div class="count_info">
+			<a><? echo $row["user_nick"]; ?></a>
+			<a></a>
+			<a><? echo $row["store_name"]; ?></a>
+		</div>
+		<div class="mynav_wrapper">
+			<div class="mynav navBorder">
+				<a href="my_order.php">
+					<div class="navTop left_radius">订单查询</div>
+					<div class="navBottom">
+						<div class="navLabel gat_blue"></div>
+					</div>
+				</a>
+			</div>
+			<div class="mynav navBorder">
+				<a href="my_collect.php">
+					<div class="navTop">我的收藏</div>
+					<div class="navBottom">
+						<div class="navLabel gat_blue"></div>
+					</div>
+				</a>
+			</div>
+			<div class="mynav navBorder">
+				<a href="my_recode.php">
+					<div class="navTop">帐户纪录</div>
+					<div class="navBottom">
+						<div class="navLabel gat_blue"></div>
+					</div>
+				</a>
+			</div>
+			<div class="mynav navBorder">
+				<a href="my_setting.php">
+					<div class="navTop">帐户设定</div>
+					<div class="navBottom">
+						<div class="navLabel gat_blue"></div>
+					</div>
+				</a>
+			</div>
+			<div class="mynav">
+				<a href="mystore.php">
+					<div class="navTop right_radius">我的店家</div>
+					<div class="navBottom">
+						<div class="navLabel gat_blue"></div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
 	<?	if($row["store"]==null&&$row["user_attest"]!=7){ ?>
 		<button type="button" class="btn btn-default" disabled="disabled" >店家资格申请(需完成全部认证)</button>
 	<? }else if($row["store"]==null&&$row["user_attest"]==7&&$row["store_apply"]==null){ ?>
@@ -24,7 +75,7 @@
 	<? }else if($row["store"]==null&&$row["user_attest"]==7&&$row["store_apply"]!=null&&$row["sa_state"]==2){ ?>
 		<input type="button" data-toggle="modal" data-target="#apply_store_Modal"  data-backdrop="static" data-keyboard=false class="btn btn-default" value="店家资格申请(上次申请被拒)">
 	<? }else{ ?>
-		<a href='mystore.php'>我的店家</a>
+		<a href='mystore.php'></a>
 	<? } ?>
 </div>
 <form id='apply_store_form' action='ajax/mystore.php' method="post" enctype="multipart/form-data">

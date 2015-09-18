@@ -23,7 +23,6 @@
 
     <!-- Custom CSS -->
     <link href="../include/css/admin_style.css" rel="stylesheet">
-		<link href="../include/css/bootstrap-switch.min.css" rel="stylesheet">
     <!-- Custom Fonts -->
     <link href="../include/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     
@@ -31,7 +30,6 @@
 		<script src="../include/js/plugins/metisMenu/metisMenu.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="../include/js/bootstrap.min.js"></script>
-    <script src="../include/js/bootstrap-switch.min.js"></script>
 		<script src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
     <!-- Custom Theme JavaScript -->

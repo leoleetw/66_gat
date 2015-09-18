@@ -8,17 +8,20 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <title>宝玉石</title>
+<link href="include/css/plugins/dataTables.bootstrap.css" rel="stylesheet">
 <link href="include/css/bootstrap.min.css" rel="stylesheet">
 
 <!-- jQuery Version 2.1.4 -->
 <script src="include/js/jquery-2.1.4.min.js"></script>
 <script src="include/js/plugins/cookie/jquery.cookie.js"></script>
+<script src="include/js/plugins/dataTables/jquery.dataTables.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="include/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="include/js/ajax.js"></script>
 <script src="http://www.google.com/jsapi"></script>
 <!-- jQuery Image Scale Carousel CSS & JS -->
 <link href="include/css/style.css" rel="stylesheet">
+<link href="include/css/styletwo.css" rel="stylesheet">
 </head>
 <body>
 <header>

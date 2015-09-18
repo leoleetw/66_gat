@@ -30,7 +30,7 @@
   	</section>
 </header>
 
-	<div class="col-lg-12" style="text-align:center;">
+	<div class="col-lg-12" id="top_banner" style="text-align:center;">
 
 		<div class="banner slider variable-width"> <!-- style="overflow:hidden;width:100%"-->
 			<div> <img src="include/images/1.jpg" style="height:300px;"></div>

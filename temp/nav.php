@@ -1,18 +1,22 @@
 
-<div class="col-lg-12">
+<div class="col-lg-12" id="search">
 	<form id="search_form" action="">
 		<div class="col-lg-2 col-lg-offset-6">
-			<select class="form-control" id="search_type" name="search_type">
-				<option value="keyword">关键字</option>
-				<option value="price">价格带</option>
-			</select>
+			<div class="search_select">
+				<select class="form-control" id="search_type" name="search_type">
+					<option value="keyword">关键字</option>
+					<option value="price">价格带</option>
+				</select>
+			</div>
 		</div>
 		<div class="col-lg-3">
-			<div id="search_div1"><input type="text" class="form-control" id="search_value" name="search_value" value=""></div>
-			<div id="search_div2" style="display:none;">
-				<input type="text" class="form-control" id="search_value1" name="search_value1" value="" style="width:48%;float:left;">
-				~
-				<input type="text" class="form-control" id="search_value2" name="search_value2" value="" style="width:48%;float:right;">
+			<div class="search_content">
+				<div id="search_div1"><input type="text" class="form-control" id="search_value" name="search_value" value=""></div>
+				<div id="search_div2" style="display:none;">
+					<input type="text" class="form-control" id="search_value1" name="search_value1" value="" style="width:48%;float:left;">
+					~
+					<input type="text" class="form-control" id="search_value2" name="search_value2" value="" style="width:48%;float:right;">
+				</div>
 			</div>
 		</div>
 		<div class="col-lg-1"><button type="button" id="search_btn" name="search_btn" class="btn btn-primary" >搜寻</button></div>
@@ -21,15 +25,15 @@
 <div class="col-lg-3">
 	<div class="row">
 		<nav>
-			<div id="item_list"><img src="include/images/product_02.png"></div>
+			<div id="item_list"><img src="include/images/product.png"></div>
 			<div class="nav_wrapper">
 				<ul id="nav_wrapper">
 				<?
-					$sql = "select * from category where rank = 1";
+					$sql = "select * from category where rank = 1 and is_show = 0";
 					$result = mysqli_query($sqli,$sql);
 					while($row = mysqli_fetch_array($result)){
 						echo "<li><h4>".$row["cate_name"]."</h4><ul>";//a href='item_list.php?cate_id=".$row["cate_id"]."'
-						$sql_sub = "select * from category where parent_id='".$row["cate_id"]."'";
+						$sql_sub = "select * from category where parent_id='".$row["cate_id"]."' and is_show = 0";
 						$result_sub = mysqli_query($sqli,$sql_sub);
 						while($row_sub = mysqli_fetch_array($result_sub)){
 							echo "<li><a href='item_list.php?cate_id=".$row_sub["cate_id"]."'> ".$row_sub["cate_name"]."</a></li>";
@@ -42,7 +46,7 @@
 				<a href='item_list.php'> 全商品一览</a>
 
 			</div>
-			<div id="brand_info"><img src="include/images/brand_02.png"></div>
+			<div id="brand_info"><img src="include/images/brand.png"></div>
 			<div class="brand_nav_wrapper">
 
 				<?

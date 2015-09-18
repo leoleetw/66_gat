@@ -8,15 +8,15 @@
 			$this_page = 1;
 		else
 			$this_page = intval($_GET["new_page"]);
-		$sql = "select a.* from item a 
-			inner join store b on a.store_id = b.store_id 
+		$sql = "select a.* from item a
+			inner join store b on a.store_id = b.store_id
 		 where b.user_id=".$_SESSION["user_id"]." and a.item_state = 0";
 		$rs_count = mysqli_num_rows(mysqli_query($sqli,$sql));
 		$total_page = ceil($rs_count/12);
 		$result = mysqli_query($sqli,$sql." limit ".(($this_page-1)*12).",12");
 	?>
-		<table class="table">
-			<tr><th>商品编号</th><th>商品名称</th><th>价格</th><th>数量</th><th>图片</th><th>修改</th></tr>
+		<table class="table orderDetail shelves_table">
+			<tr class="greenTitle"><th>商品编号</th><th>商品名称</th><th>价格</th><th>数量</th><th>图片</th><th>修改</th></tr>
 	<?
 		while($row = mysqli_fetch_array($result)){
 			$photo_img = explode("|",$row["item_photo"]);
@@ -26,15 +26,15 @@
 				<td><? echo $row["item_name"]; ?></td>
 				<td><? echo $row["item_price"]; ?></td>
 				<td><? echo $row["item_stock"]; ?></td>
-				<td><img src="update/item_s/<? echo $photo_img[0]."?".date("His"); ?>" style="max-width:100px;max-height:100px;"></td>
+				<td><div class="miniPhoto_wrapper"><img src="update/item_s/<? echo $photo_img[0]."?".date("His"); ?>"></div></td>
 				<td>
-					<button type="button" class="btn btn-primary" onclick="location.href='mystore_item?action=edit&item_id=<? echo $row["item_id"]; ?>'" >编辑详情</button>
-					<button type="button" class="btn btn-primary" onclick="on_shelves(<? echo $row["item_id"]; ?>)" <? if($row["item_stock"]=="0"){ echo "disabled";} ?> >上架</button>
-					<button type="button" class="btn btn-primary" onclick="" >删除</button>
+					<div class="shelves_addBtn" onclick="on_shelves(<? echo $row["item_id"]; ?>)" <? if($row["item_stock"]=="0"){ echo "disabled";} ?> ></div>
+					<div class="shelves_editBtn" onclick="location.href='mystore_item?action=edit&item_id=<? echo $row["item_id"]; ?>'" ></div>
+					<div class="deleteBtn" onclick="" ></div>
 				</td>
 			</tr>
-	<? 
-		} 
+	<?
+		}
 	?>
 		</table>
 </div>
@@ -58,9 +58,9 @@
       	}
       },
 
-       error:function(xhr, ajaxOptions, thrownError){ 
-          alert(xhr.status); 
-          alert(thrownError); 
+       error:function(xhr, ajaxOptions, thrownError){
+          alert(xhr.status);
+          alert(thrownError);
        }
   	});
 	}

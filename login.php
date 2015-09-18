@@ -35,6 +35,4 @@
   	<? include_once("temp/footer.php"); ?>
 </footer>
 <? Message(); ?>
-<script>
-</script>
 </body>

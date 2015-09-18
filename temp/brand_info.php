@@ -2,7 +2,7 @@
 	include_once("include/dbinclude.php");
 ?>
 <div class="col-lg-12">
-	<div class="categoryBanner">这里是品牌名称</div>
+	<div class="brandBanner">品牌 BRANDS</div>
 </div>
 <?
 	include_once("temp/nav.php");

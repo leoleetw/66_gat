@@ -9,6 +9,7 @@ if($_SERVER['SERVER_PORT'] !== 443 &&
   header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
   exit;
 }*/
+//--66_gat use --//
 function send_msg($from , $to, $msg ){
 	global $sqli;
 	$now = date("Y-m-d H:i:s");
@@ -19,6 +20,61 @@ function send_msg($from , $to, $msg ){
 	else
 		return false;
 }
+function order_state($user_type , $pay_state , $item_state){
+	if($user_type == 'buy'){
+		if($pay_state == 0)
+			return "<font style='color:red'>尚未付款</font>";
+		else if($item_state == 0)
+			return "<font>卖家尚未出货</font>";
+		else if($item_state == 1)
+			return "<font>货物达平台途中</font>";
+		else if($item_state == 2)
+			return "<font>货物已达平台</font>";
+		else if($item_state == 3)
+			return "<font>货物达买家途中</font>";
+		else if($item_state == 4)
+			return "<font style='color:blue'>已结单</font>";
+	}
+	else if($user_type == 'sell'){
+		if($pay_state == 0)
+			return "<font style='color:red'>买家尚未付款</font>";
+		else if($item_state == 0)
+			return "<font>尚未出货</font>";
+		else if($item_state == 1)
+			return "<font>货物达平台途中</font>";
+		else if($item_state == 2)
+			return "<font>货物已达平台</font>";
+		else if($item_state == 3)
+			return "<font>货物达买家途中</font>";
+		else if($item_state == 4){
+			if($pay_state == 1)
+				return "<font>货物已达平台，尚未汇款给卖家</font>";
+			else if($pay_state == 2)
+				return "<font style='color:blue'>已结单</font>";
+		}
+	}
+}
+function pay_state($indexof){
+	 if($indexof==0)
+	 	return "<font style='color:red'>买家尚未付款</font>";
+	 else if($indexof==1)
+	 	return "<font>平台已收取款项</font>";
+	 else if($indexof==2)
+	 	return "<font style='color:blue'>已汇款至卖家</font>";
+}
+function item_state($indexof){
+	 if($indexof==0)
+	 	return "<font style='color:red'>賣家備貨中</font>";
+	 else if($indexof==1)
+	 	return "<font>貨物送達平台途中</font>";
+	 else if($indexof==2)
+	 	return "<font>貨物已到達平台</font>";
+	 else if($indexof==3)
+	 	return "<font>貨物送至買家途中</font>";
+	 else if($indexof==4)
+	 	return "<font style='color:blue'>買家已收到貨物</font>";
+}
+//--66_gat use --//
 function getip(){
     $ipaddress = '';
     if (!empty($_SERVER['HTTP_CLIENT_IP']))
@@ -186,7 +242,7 @@ function Message(){
     if($_SESSION["errnumber"]==0)
        echo "<center>".$_SESSION["msg"]."</center>";
     else{
-       echo "<script> alert('" .$_SESSION["msg"]."')";
+       echo "<script> alert('" .$_SESSION["msg"]."');";
        echo "</script>";
     }
     $_SESSION["msg"]="";

@@ -19,6 +19,7 @@
 <script src="http://www.google.com/jsapi"></script>
 <!-- jQuery Image Scale Carousel CSS & JS -->
 <link href="include/css/style.css" rel="stylesheet">
+<link href="include/css/styletwo.css" rel="stylesheet">
 </head>
 <body>
 <header>

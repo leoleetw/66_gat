@@ -1,10 +1,41 @@
 <div class="col-lg-10 col-lg-offset-1">
+	<form id='search_form' action='item_manage.php'>
+		<select id='search_type' name='search_type'>
+			<option value='item_name'>商品名称</option>
+			<option value='store_name'>店家名称</option>
+			<option value='item_id'>商品编号</option>
+			<option value='store_id'>店家编号</option>
+		</select>
+		<input type='text' id='search_value' name='search_value' class='form-control' value=''>
+		<button type='submit' class='btn btn-primary' >搜寻</button>
+	</form>
+</div>
+<div class="col-lg-10 col-lg-offset-1">
 		<table class='table'>
-		<thead><tr><th>商品名称</th><th>商品图片</th><th>所属店家</th><th>分类</th><th>品牌</th><th>最新</th><th>热门</th><th>推荐</th><th>当前状态</th><th>动作</th></tr></thead>
+		<thead><tr><th>商品名称</th><th>商品图片</th><th>所属店家</th><th>分类</th><th>品牌</th><th>最新</th><th>热门</th><th>当前状态</th><th>动作</th></tr></thead>
 		<tbody>
 		<?
-			$sql = "select a.* , b.store_name ,b.store_id from item a inner join store b on a.store_id = b.store_id order by shelves_date DESC limit 0,20";
-			$result = mysqli_query($sqli,$sql);
+			if($_GET["now_page"]=="")
+				$now_page = 1;
+			else
+				$now_page = $_GET["now_page"];
+			$limit_count = 10;
+			$sql = "select a.* , b.store_name ,b.store_id from item a inner join store b on a.store_id = b.store_id ";
+			if($_GET['search_type']!=""){
+				if($_GET["search_type"]=='item_name')
+					$sql .= "where a.item_name like '%".$_GET["search_value"]."%' ";
+				else if($_GET["search_type"]=='store_name')
+					$sql .= "where b.store_name like '%".$_GET["search_value"]."%' ";
+				else if($_GET["search_type"]=='item_id')
+					$sql .= "where a.item_id = '".$_GET["search_value"]."' ";	
+				else if($_GET["search_type"]=='store_id')
+					$sql .= "where a.store_id = '".$_GET["search_value"]."' ";
+			}
+			$sql .= "order by shelves_date DESC";
+			$result1 = mysqli_query($sqli,$sql);
+			$total_count = mysqli_num_rows($result1);
+			$page_count = ceil($total_count / $limit_count);
+			$result = mysqli_query($sqli,$sql." limit ".($now_page-1)*$limit_count.",".$limit_count);
 			while($row = mysqli_fetch_array($result)){
 				$item_photo = explode("|" ,$row["item_photo"] );
 		?>
@@ -42,7 +73,7 @@
 						?>
 						<img src="../include/images/control/<? echo $img; ?>" onclick="change_state('is_hot',<? echo $row["item_id"].",".$row["is_hot"]; ?>)">
 					</td>
-					<td>
+					<!--td>
 						<?
 							if($row["is_best"]=="0")
 								$img = "no.png";
@@ -50,7 +81,7 @@
 								$img = "ok.png";
 						?>
 						<img src="../include/images/control/<? echo $img; ?>" onclick="change_state('is_best',<? echo $row["item_id"].",".$row["is_best"]; ?>)">
-					</td>
+					</td-->
 					<td>
 						<?
 							if($row["item_state"]=="0")
@@ -66,6 +97,8 @@
 		<? } ?>
 		</tbody>
 	</table>
+	<button type='button' id='next_btn' onclick="location.href='item_manage.php?<? echo "now_page=".($now_page-1)."&search_type=".$_GET["search_type"]."&search_value=".$_GET["search_value"]; ?>'" <? if($now_page == 1 ){echo "style='display:none;'";} ?>>上一页</button>
+	<button type='button' id='last_btn' onclick="location.href='item_manage.php?<? echo "now_page=".($now_page+1)."&search_type=".$_GET["search_type"]."&search_value=".$_GET["search_value"]; ?>'" <? if($page_count <= 1 || $page_count == $now_page){echo "style='display:none;'";} ?>>下一页</button>
 </div>
 
 <script>
