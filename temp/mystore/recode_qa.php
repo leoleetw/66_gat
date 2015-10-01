@@ -103,28 +103,25 @@
 		var item_photo = new Array();
 		for(var i = 0 ; i < myjson.qa.length ; ++i){
 			item_photo = myjson.qa[i].item_photo.split("|");
-			str += "<div class='row panel panel-default'>";
-			str += "	<div class='panel-heading'>";
-			str += "    <button type='button' class='btn btn-primary' id='' onclick='show_qa_modal("+myjson.qa[i].qa_id+");' >回覆/编辑</button>";
-			str += "  </div>";
-			str += "  <div class='panel-body'>";
-			str += "		<div class='col-lg-4'><img src='update/item_s/"+item_photo[0]+"' style='width:100px;'>"+myjson.qa[i].item_name+"</div>";
-			str += "		<div class='col-lg-8'>";
-			str += "			<div class='col-lg-12'>";
-			str += "				<div>买家问题︰"+myjson.qa[i].user_nick+"</div>";
-			str += "				<div>"+myjson.qa[i].q_creatdate+"</div>";
-			str += "				<div>"+myjson.qa[i].q_content+"</div>";
+			str += "  <div class='row qaWrapper'>";
+			str += "		<div class='col-lg-3'><div class='qaPhoto_wrapper'><img src='update/item_s/"+item_photo[0]+"'></div>";
+			str += "		<font class='qaItemName'>"+myjson.qa[i].item_name+"</font></div>";
+			str += "		<div class='col-lg-9 qaContent qaGreenBorder'>";
+			str += "			<div class='qText'>";
+			str += "				<p>买家问题︰"+myjson.qa[i].user_nick+"";
+			str += "				<font class='qaDate'>"+myjson.qa[i].q_creatdate+"</font></p>";
+			str += "				<p>"+myjson.qa[i].q_content+"</p>";
 			str += "			</div>"
 			if(myjson.qa[i].a_content!="" && myjson.qa[i].a_creatdate != "0000-00-00 00:00:00"){
-				str += "				<div class='col-lg-12'>";
-				str += "					<div>我的回覆︰</div>";
-				str += "					<div>"+myjson.qa[i].a_creatdate+"</div>";
-				str += "					<div>"+myjson.qa[i].a_content+"</div>";
+				str += "				<div class='aText_green'>";
+				str += "					<p>我的回覆︰";
+				str += "					<font class='qaDate'>"+myjson.qa[i].a_creatdate+"</font></p>";
+				str += "					<p>"+myjson.qa[i].a_content+"</p>";
 				str += "				</div>";
 			}
+			str += "    	<a class='btn btn-primary qaEdit' id='' onclick='show_qa_modal("+myjson.qa[i].qa_id+");' ></a>";
 			str += "		</div>";
 			str += "	</div>";
-			str += "</div>";
 		}
 		$('#qa_content_div').html(str);
 		if($('#now_page').val()!='1')

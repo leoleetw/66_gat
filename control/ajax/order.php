@@ -14,8 +14,12 @@
 				$sql = "update `order` set pay_state = 1  where order_id =".$_POST["order_id"];
 				if(!mysqli_query($sqli,$sql))
 					echo "1|";
-				else
+				else{
+					$msg = "订单 ".$_POST["order_id"]." 已付款";
+					$url = "";
+					send_msg('system' , $row['user_id'], $msg, $url , 1 );
 					echo "0|";
+				}
 			}
 			else if($row["item_state"]==0){
 				$sql = "update `order` set item_state = 1 where order_id =".$_POST["order_id"];
@@ -63,6 +67,9 @@
 					else
 						$sql = "update score set sell_count = sell_count + 1 where user_id = ".$row["user_id"];
 					mysqli_query($sqli,$sql);
+					$msg = "您的订单 ".$_POST["order_id"]." 物品已送达买家，您可对买家进行评价";
+					$url = "mystore_recode.php?action=score";
+					send_msg('system' , $row['user_id'], $msg, $url , 1 );
 					echo "0|";
 				}
 			}

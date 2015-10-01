@@ -16,7 +16,8 @@
 		        <a id="login" href='login.php' >登入</a>
 		        <a id="register" href='register.php'>注册</a>
 		      <? }else{ ?>
-		        <a href='my.php' >我的帐号</a><a href='ajax/login.php?action=log_out'>登出</a>
+		        <a href='my.php' >我的帐号</a>
+		        <a id="logout" href='ajax/login.php?action=log_out'>登出</a>
 		      <? } ?>
 		    </section>
 		  </div>

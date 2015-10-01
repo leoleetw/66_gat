@@ -7,8 +7,8 @@
 	    	inner join item d on d.item_id = a.item_id 
 	    	left join user b on a.user_id = b.user_id 
 	    	left join store c on c.store_id = d.store_id 
-	    	where a.user_id = ".$_SESSION["user_id"]." and (a.q_creatdate between '".$_POST["start_date"]." 00:00:00' and '".$_POST["end_date"]." 24:59:59') order by a.q_creatdate desc";
-	  $result = mysqli_query($sqli,$sql);
+	    	where a.user_id = ".$_SESSION["user_id"]." and (a.q_creatdate between '".$_POST["start_date"]." 00:00:00' and '".$_POST["end_date"]." 23:59:59') order by a.q_creatdate desc";
+		$result = mysqli_query($sqli,$sql);
 		for($i = 0 ;$row = mysqli_fetch_array($result);++$i)
 			$list[$i] = $row ;
 		echo json_encode($list);
@@ -41,62 +41,6 @@
 		for($i = 0 ;$row = mysqli_fetch_array($result);++$i)
 			$temp[$i] = $row ;
 		$list = Array( 'total_count' => $total_count , 'page_count' => $page_count , 'qa' => $temp);
-		echo json_encode($list);
-	}
-	else if($action == "order_info"){
-		$list = Array();
-		$sql = "select a.* from `order` a 
-		where a.order_id = ".$_POST["order_id"];
-		$result = mysqli_query($sqli,$sql);
-		$row = mysqli_fetch_array($result);
-		$list = $row;
-		$list += Array('pay_state_font' => pay_state($row["pay_state"]),'item_state_font' => item_state($row["item_state"]));
-		$item = Array();
-		$sql = "select * from order_item where order_id = ".$_POST["order_id"];
-		$result = mysqli_query($sqli,$sql);
-		for($i = 0 ; $i < $row = mysqli_fetch_array($result); ++$i )
-			$item[$i] = $row;
-		$list += Array('item_info' => $item );
-		
-		echo json_encode($list);
-	}
-	else if($action == "order_change_price"){
-		$sql = "update `order` set edit_price = '".$_POST["edit_price"]."' , total_price = edit_price + order_shipment where order_id =".$_POST["order_id"];
-		//echo $sql;
-		if(mysqli_query($sqli,$sql))
-			echo "0|";
-		else
-			echo "1|";
-	}
-	else if($action == 'seller_check'){
-		$sql = "update `order` set order_check = 1 , found_date ='".date('Y-m-d H:i:s')."' where order_id = ".$_POST["order_id"];
-		if(!mysqli_query($sqli,$sql))
-			echo "1|";
-		else{
-			$sql = "select order_user_id from `order` where order_id = ".$_POST["order_id"];
-			$result = mysqli_query($sqli,$sql);
-			$row = mysqli_fetch_array($result);
-			$msg = "您有订单已被卖家确认，赶紧去订单专区查看缴费资讯，并於三天内完成缴费动作！";
-			send_msg('system' , $row["order_user_id"], $msg );
-			echo "0|";
-		}
-		
-		
-	}
-	else if($action == "order_store"){ // 150902 
-		$list = Array();
-		$sql = "select a.* , b.* from `order` a 
-		inner join order_store b on a.order_id = b.order_id 
-		where b.store_id = ".$_POST["store_id"]." AND a.order_id = ".$_POST["order_id"];
-		$result = mysqli_query($sqli,$sql);
-		$row = mysqli_fetch_array($result);
-		$list = $row;
-		$item = Array();
-		$sql = "select * from order_item where store_id = ".$_POST["store_id"]." AND order_id = ".$_POST["order_id"];
-		$result = mysqli_query($sqli,$sql);
-		for($i = 0 ; $i < $row = mysqli_fetch_array($result); ++$i )
-			$item[$i] = $row;
-		$list += Array('item_info' => $item);
 		echo json_encode($list);
 	}
 ?>

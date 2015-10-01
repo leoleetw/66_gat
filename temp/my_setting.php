@@ -18,154 +18,102 @@
   	<!--商品html页面-->
     <div role="tabpanel" class="tab-pane active" id="setting_self">
     	<form id="self_form">
-    	<div class='col-lg-6 col-lg-offset-3 settingWrapper'>
-    		<img src="include/images/setting_bg.png">
-			<div class='nick_keyin'><input type='text' class='form-control' id='user_nick' name='user_nick' value='<? echo $row['user_nick'];?>'></div>
-			<div class="info_keyin">
-				<input type='radio' id='user_sex0' name='user_sex' value='0' <? if($row['user_sex']=='0'){echo 'checked';}?>> 男
-				<input type='radio' id='user_sex1' name='user_sex' value='1' <? if($row['user_sex']=='1'){echo 'checked';}?>> 女
-				<div>
-					<?
-						$birth = explode("-",$row['user_birthday']);
-					?>
-					<select id='birth_y' name='birth_y' class='form-control' style='width:34%;float:left;'>
+	    	<div class='col-lg-6 col-lg-offset-3 settingWrapper'>
+	    		<img src="include/images/setting_bg.png">
+				<div class='nick_keyin'><input type='text' class='form-control' id='user_nick' name='user_nick' value='<? echo $row['user_nick'];?>'></div>
+				<div class="info_keyin">
+					<input type='radio' id='user_sex0' name='user_sex' value='0' <? if($row['user_sex']=='0'){echo 'checked';}?>> 男
+					<input type='radio' id='user_sex1' name='user_sex' value='1' <? if($row['user_sex']=='1'){echo 'checked';}?>> 女
+					<div>
 						<?
-							for($i = 1900 ; $i <= (intval(date("Y"))-10) ; ++$i){
-								echo "<option value='".$i."' ";
-								if($i == intval($birth[0]))
-									echo "selected";
-								echo "> ".$i."</option>";
+							$birth = explode("-",$row['user_birthday']);
+						?>
+						<select id='birth_y' name='birth_y' class='form-control' style='width:34%;float:left;'>
+							<?
+								for($i = 1900 ; $i <= (intval(date("Y"))-10) ; ++$i){
+									echo "<option value='".$i."' ";
+									if($i == intval($birth[0]))
+										echo "selected";
+									echo "> ".$i."</option>";
+								}
+							?>
+						</select>
+						<select id='birth_m' name='birth_m' class='form-control' style='width:33%;float:left;'>
+							<?
+								for($i = 1 ; $i <= 12 ; ++$i){
+									echo "<option value='";
+									if($i < 10 )
+										echo "0";
+									echo $i."' ";
+									if($i == intval($birth[1]))
+										echo "selected";
+									echo "> ";
+									if($i < 10 )
+										echo "0";
+									echo $i."</option>";
+								}
+							?>
+						</select>
+						<select id='birth_d' name='birth_d' class='form-control' style='width:33%;float:left;'>
+							<?
+								for($i = 1 ; $i <= 31 ; ++$i){
+									echo "<option value='";
+									if($i < 10 )
+										echo "0";
+									echo $i."' ";
+									if($i == intval($birth[2]))
+										echo "selected";
+									echo "> ";
+									if($i < 10 )
+										echo "0";
+									echo $i."</option>";
+								}
+							?>
+						</select>
+					</div>
+					<select id='city_area' name='city_area' class='form-control' style='width:50%;float:left;'>
+						<option value=''>请选择</option>
+						<?
+							$sql_city = "select * from city where city_rank = 1 order by city_id";
+							$result_city = mysqli_query($sqli,$sql_city);
+							while($row_city = mysqli_fetch_array($result_city)){
+								echo "<option value='".$row_city["city_id"]."' ";
+								if($row["city_code"]!='0'){
+									$city_area = substr($row["city_code"] , 0 ,3).'000';
+									if(intval($city_area) == intval($row_city["city_id"]))
+										echo "selected";
+								}
+								echo ">".$row_city["city_name"]."</option>";
 							}
 						?>
 					</select>
-					<select id='birth_m' name='birth_m' class='form-control' style='width:33%;float:left;'>
-						<?
-							for($i = 1 ; $i <= 12 ; ++$i){
-								echo "<option value='";
-								if($i < 10 )
-									echo "0";
-								echo $i."' ";
-								if($i == intval($birth[1]))
-									echo "selected";
-								echo "> ";
-								if($i < 10 )
-									echo "0";
-								echo $i."</option>";
+					<select id='city_code' name='city_code' class='form-control' style='width:50%;'>
+						<?	if($row["city_code"]=='0'){	?>
+						<option value=''>请选择</option>
+						<? }else{ 
+								$search_city = substr($row["city_code"] , 0 ,3);
+								$sql_city = "select * from city where city_rank = 2 and city_id like '".$search_city."%' order by city_id";
+								$result_city = mysqli_query($sqli,$sql_city);
+								while($row_city = mysqli_fetch_array($result_city)){
+									echo "<option value='".$row_city["city_id"]."' ";
+									if($row["city_code"] == $row_city["city_id"])
+										echo "selected";
+									echo ">".$row_city["city_name"]."</option>";
+								}
 							}
 						?>
 					</select>
-					<select id='birth_d' name='birth_d' class='form-control' style='width:33%;float:left;'>
-						<?
-							for($i = 1 ; $i <= 31 ; ++$i){
-								echo "<option value='";
-								if($i < 10 )
-									echo "0";
-								echo $i."' ";
-								if($i == intval($birth[2]))
-									echo "selected";
-								echo "> ";
-								if($i < 10 )
-									echo "0";
-								echo $i."</option>";
-							}
-						?>
-					</select>
+					<input type="text" class="form-control" id="user_addr" name="user_addr" value='<? echo $row['user_addr'];?>'>
+					<input type='text' class='form-control' id='email' value='<? echo $row['email'];?>' readonly>
+			    	<button type="button" id="change_email_btn" name="change_email_btn" class="btn btn-primary change_email"></button>
 				</div>
-				<input type='text' class='form-control' id='email' value='<? echo $row['email'];?>' readonly>
-		    	<button type="button" id="change_email_btn" name="change_email_btn" class="btn btn-primary change_email"></button>
-			</div>
-	    		<!--table width='100%'>
-	    			<tr>
-	    				<td>
-	    					昵称显示
-	    				</td>
-	    				<td>
-	    					<input type='text' class='form-control' id='user_nick' name='user_nick' value='<? echo $row['user_nick'];?>'>
-	    				</td>
-	    			</tr>
-	    			<tr>
-	    				<td>
-	    					性别
-	    				</td>
-	    				<td>
-	    					<input type='radio' id='user_sex0' name='user_sex' value='0' <? if($row['user_sex']=='0'){echo 'checked';}?>> 男 <input type='radio' id='user_sex1' name='user_sex' value='1' <? if($row['user_sex']=='1'){echo 'checked';}?>> 女
-	    				</td>
-	    			</tr>
-	    			<tr>
-	    				<td>
-	    					生日
-	    				</td>
-	    				<td>
-	    					<?
-	    						$birth = explode("-",$row['user_birthday']);
-	    					?>
-	    					<select id='birth_y' name='birth_y' class='form-control' style='width:34%;float:left;'>
-	    						<?
-	    							for($i = 1900 ; $i <= (intval(date("Y"))-10) ; ++$i){
-	    								echo "<option value='".$i."' ";
-	    								if($i == intval($birth[0]))
-	    									echo "selected";
-	    								echo "> ".$i."</option>";
-	    							}
-	    						?>
-	    					</select>
-	    					<select id='birth_m' name='birth_m' class='form-control' style='width:33%;float:left;'>
-	    						<?
-	    							for($i = 1 ; $i <= 12 ; ++$i){
-	    								echo "<option value='";
-	    								if($i < 10 )
-	    									echo "0";
-	    								echo $i."' ";
-	    								if($i == intval($birth[1]))
-	    									echo "selected";
-	    								echo "> ";
-	    								if($i < 10 )
-	    									echo "0";
-	    								echo $i."</option>";
-	    							}
-	    						?>
-	    					</select>
-	    					<select id='birth_d' name='birth_d' class='form-control' style='width:33%;float:left;'>
-	    						<?
-	    							for($i = 1 ; $i <= 31 ; ++$i){
-	    								echo "<option value='";
-	    								if($i < 10 )
-	    									echo "0";
-	    								echo $i."' ";
-	    								if($i == intval($birth[2]))
-	    									echo "selected";
-	    								echo "> ";
-	    								if($i < 10 )
-	    									echo "0";
-	    								echo $i."</option>";
-	    							}
-	    						?>
-	    					</select>
-	    				</td>
-	    			</tr>
-	    			<tr>
-	    				<td>
-	    					信箱
-	    				</td>
-	    				<td>
-	    					<input type='text' class='form-control' id='email' value='<? echo $row['email'];?>' readonly style="width:80%;float:left;">
-	    					<button type="button" id="change_email_btn" name="change_email_btn" class="btn btn-primary">变更信箱</button>
-	    				</td>
-	    			</tr>
-	    			<tr>
-	    				<td colspan='2'>
-	    					<input type="hidden" id="self_action" name="action" value="self">
-	    					<button type='button' id='self_btn' name='self_btn' class='btn btn-primary'>储存设置</button>
-	    				</td>
-	    			</tr>
-	    		</table-->
-    		</div>
-    		<div class="col-lg-6 col-lg-offset-3">
+	    	</div>
+			<div class="col-lg-6 col-lg-offset-3">
 		    	<input type="hidden" id="self_action" name="action" value="self">
 			    <button type='button' id='self_btn' name='self_btn' class='btn btn-primary settingSave'>储　存</button>
-    		</div>
-    	</form>
-    </div>
+			</div>
+		</form>
+	</div>
 
 
     <div role="tabpanel" class="tab-pane" id="setting_safe">
@@ -247,53 +195,45 @@
 	</div>
 </form>
 <script>
+	$('#city_area').change(function(e){ //变更城市
+		if($('#city_area').val()!=""){
+			$.ajax({
+		      url: 'ajax/city.php',
+		      data: "action=get_city_code&city_area="+$('#city_area').val(),//$('#sentToBack').serialize()
+		      type:"POST",
+		      dataType:'JSON',
+
+		      success: function(myjson){
+		      	var str = "";
+		      	for(var i = 0 ; i < myjson.length ; ++i){
+		      		str += "<option value='"+myjson[i].city_id+"'>"+myjson[i].city_name+"</option>";
+		      	}
+		      	$('#city_code').html(str);
+		      },
+
+		      error:function(xhr, ajaxOptions, thrownError){
+					alert(xhr.status);
+					alert(thrownError);
+				}
+			});
+		}
+		
+	})
 	$('#self_btn').click(function(e){ //变更其他资讯
 		$.ajax({
-      url: 'ajax/setting.php',
-      data: $('#self_form').serialize(),
-      type:"POST",
-      dataType:'text',
-
-      success: function(mytext){
-      	var arr = new Array();
-      	arr = mytext.split("|");
-      	if(arr[0]=='0'){
-      		alert("资料更新成功");
-      	}
-      	else if(arr[0]=='1'){
-      		alert("资料更新失败");
-      	}
-      	else{
-      		alert(mytext);
-      	}
-      },
-
-       error:function(xhr, ajaxOptions, thrownError){
-          alert(xhr.status);
-          alert(thrownError);
-       }
-  	});
-	});
-	$('#safe_btn').click(function(e){ //变更密码
-		if($('#user_pwd_div').attr("class").indexOf("has-success") > 0 && $('#new_pwd_div').attr("class").indexOf("has-success") > 0  && $('#check_pwd_div').attr("class").indexOf("has-success") > 0 ){
-			$.ajax({
 	      url: 'ajax/setting.php',
-	      data: $('#safe_form').serialize(),
+	      data: $('#self_form').serialize(),
 	      type:"POST",
 	      dataType:'text',
 
 	      success: function(mytext){
-	      	Dd("safe_form").reset();
-	      	$('#user_pwd_div').attr('class','form-group');
-	      	$('#new_pwd_div').attr('class','form-group');
-	      	$('#check_pwd_div').attr('class','form-group');
 	      	var arr = new Array();
 	      	arr = mytext.split("|");
 	      	if(arr[0]=='0'){
-	      		alert("新密码设置成功");
+	      		alert("资料更新成功");
 	      	}
 	      	else if(arr[0]=='1'){
-	      		alert("新密码设置错误");
+	      		alert("资料更新失败");
 	      	}
 	      	else{
 	      		alert(mytext);
@@ -304,6 +244,38 @@
 	          alert(xhr.status);
 	          alert(thrownError);
 	       }
+  		});
+	});
+	$('#safe_btn').click(function(e){ //变更密码
+		if($('#user_pwd_div').attr("class").indexOf("has-success") > 0 && $('#new_pwd_div').attr("class").indexOf("has-success") > 0  && $('#check_pwd_div').attr("class").indexOf("has-success") > 0 ){
+			$.ajax({
+		      url: 'ajax/setting.php',
+		      data: $('#safe_form').serialize(),
+		      type:"POST",
+		      dataType:'text',
+
+		      success: function(mytext){
+		      	Dd("safe_form").reset();
+		      	$('#user_pwd_div').attr('class','form-group');
+		      	$('#new_pwd_div').attr('class','form-group');
+		      	$('#check_pwd_div').attr('class','form-group');
+		      	var arr = new Array();
+		      	arr = mytext.split("|");
+		      	if(arr[0]=='0'){
+		      		alert("新密码设置成功");
+		      	}
+		      	else if(arr[0]=='1'){
+		      		alert("新密码设置错误");
+		      	}
+		      	else{
+		      		alert(mytext);
+		      	}
+		      },
+
+		       error:function(xhr, ajaxOptions, thrownError){
+		          alert(xhr.status);
+		          alert(thrownError);
+		       }
 	  	});
 		}
 	});

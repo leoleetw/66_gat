@@ -10,11 +10,11 @@ if($_SERVER['SERVER_PORT'] !== 443 &&
   exit;
 }*/
 //--66_gat use --//
-function send_msg($from , $to, $msg ){
+function send_msg($from , $to, $msg ,$url ,$iden){
 	global $sqli;
 	$now = date("Y-m-d H:i:s");
-	$sql = "INSERT INTO message( msg_from, msg_to, msg_content, msg_state, msg_date) 
-	VALUES('".$from."' , '".$to."' , '".$msg."' , 0 , '".$now."')";
+	$sql = "INSERT INTO message( msg_from, msg_to, msg_content, msg_url, msg_identity, msg_state, msg_date) 
+	VALUES('".$from."' , '".$to."' , '".$msg."', '".$url."', '".$iden."' , 0 , '".$now."')";
 	if(mysqli_query($sqli,$sql))
 		return true;
 	else

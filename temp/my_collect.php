@@ -4,18 +4,18 @@
 ?>
 <div class="col-lg-12">
 		<div class="row">
-		<!--table id="collect_table" class="collectTable"><thead><tr><th colspan="2">商品</th><th>价格</th><th>商店</th><th>操作</th></tr></thead><tbody-->
 		<?
 			$sql = "select a.* , b.* , c.store_name from collect a
 			left join item b on a.item_id = b.item_id
 			left join store c on a.store_id = c.store_id
 			where a.user_id = '".$_SESSION["user_id"]."'";
 			$result = mysqli_query($sqli,$sql);
-			$i = 0;
+			$rs_cn = mysqli_num_rows($result);
+			$i = 1;
 			while($row = mysqli_fetch_array($result)){
 				$item_img = explode("|",$row["item_photo"]);
-				if(($i%4) == 0)
-					echo "</div><div class='row'>";
+				if(($i%4) == 1 && $i != 1)
+					echo "<div class='row'>";
 		?>
 				<div id='collect<? echo $row["item_id"]; ?>' class="col-lg-3">
 					<div id='collect<? echo $row["item_id"]; ?>'>
@@ -45,6 +45,8 @@
 						</div>
 				</div>
 		<?
+				if(($i%4) == 0 || $i == $rs_cn)
+					echo "</div>";
 				$i++;
 			}
 		?>
@@ -52,10 +54,6 @@
 		</div>
 </div>
 <script>
-	$(document).ready(function() {
-			var opt={"oLanguage":{"sUrl":"include/js/plugins/dataTables/dataTables_cn.txt"}};
-	    $('#collect_table').dataTable(opt);
-	});
 	function remove_collect(item_id){
 		$.ajax({
       url: 'ajax/item.php',

@@ -73,19 +73,58 @@
 		
 	</div>
 	<div>
+		<?
+			$sql = "select city_code ,user_name , user_addr ,mobile from user where user_id =".$_SESSION["user_id"];
+			$result = mysqli_query($sqli,$sql);
+			$row = mysqli_fetch_array($result);
+		?>
 		<h4>送货资讯</h4>
 		<table width="100%">
 			<tr>
 				<td>姓名</td>
-				<td><input type="text" id="rec_name" name="rec_name" value="" class="form-control"></td>
+				<td><input type="text" id="rec_name" name="rec_name" value="<? echo $row["user_name"];?>" class="form-control"></td>
 			</tr>
 			<tr>
 				<td>手机</td>
-				<td><input type="text" id="rec_mobile" name="rec_mobile" value="" class="form-control"></td>
+				<td><input type="text" id="rec_mobile" name="rec_mobile" value="<? echo $row["mobile"];?>" class="form-control"></td>
 			</tr>
 			<tr>
 				<td>地址</td>
-				<td><input type="text" id="rec_addr" name="rec_addr" value="" class="form-control"></td>
+				<td>
+					<select id='rec_city_area' name='rec_city_area' class='form-control' style='width:20%;float:left;'>
+						<option value=''>请选择</option>
+						<?
+							$sql_city = "select * from city where city_rank = 1 order by city_id";
+							$result_city = mysqli_query($sqli,$sql_city);
+							while($row_city = mysqli_fetch_array($result_city)){
+								echo "<option value='".$row_city["city_id"]."' ";
+								if($row["city_code"]!='0'){
+									$city_area = substr($row["city_code"] , 0 ,3).'000';
+									if(intval($city_area) == intval($row_city["city_id"]))
+										echo "selected";
+								}
+								echo ">".$row_city["city_name"]."</option>";
+							}
+						?>
+					</select>
+					<select id='rec_city_code' name='rec_city_code' class='form-control' style='width:20%;float:left;'>
+						<?	if($row["city_code"]=='0'){	?>
+						<option value=''>请选择</option>
+						<? }else{ 
+								$search_city = substr($row["city_code"] , 0 ,3);
+								$sql_city = "select * from city where city_rank = 2 and city_id like '".$search_city."%' order by city_id";
+								$result_city = mysqli_query($sqli,$sql_city);
+								while($row_city = mysqli_fetch_array($result_city)){
+									echo "<option value='".$row_city["city_id"]."' ";
+									if($row["city_code"] == $row_city["city_id"])
+										echo "selected";
+									echo ">".$row_city["city_name"]."</option>";
+								}
+							}
+						?>
+					</select>
+					<input type="text" class="form-control" id="rec_addr" name="rec_addr" value='<? echo $row['user_addr'];?>' style='width:60%;'>
+				</td>
 			</tr>
 			<tr>
 				<td>备注</td>
@@ -105,6 +144,30 @@
 	?>
 </form>
 <script>
+	$('#rec_city_area').change(function(e){ //变更城市
+		if($('#city_area').val()!=""){
+			$.ajax({
+		      url: 'ajax/city.php',
+		      data: "action=get_city_code&city_area="+$('#rec_city_area').val(),//$('#sentToBack').serialize()
+		      type:"POST",
+		      dataType:'JSON',
+
+		      success: function(myjson){
+		      	var str = "";
+		      	for(var i = 0 ; i < myjson.length ; ++i){
+		      		str += "<option value='"+myjson[i].city_id+"'>"+myjson[i].city_name+"</option>";
+		      	}
+		      	$('#rec_city_code').html(str);
+		      },
+
+		      error:function(xhr, ajaxOptions, thrownError){
+					alert(xhr.status);
+					alert(thrownError);
+				}
+			});
+		}
+		
+	})
 	$('#rec_btn').click(function(e){
 		if($('#rec_name').val().trim()==''){
 			$('#rec_name').focus();

@@ -2,9 +2,29 @@
 	include_once("include/dbinclude.php");
 	include_once("include/captcha/simple-php-captcha.php");
 	$_SESSION['captcha'] = simple_php_captcha();
+	if($_COOKIE["click_item"]=="" || $_COOKIE["click_item"]==null){
+		setcookie("click_item",$_GET["item_id"]);
+		//$_COOKIE["click_item"] = $_GET["item_id"];
+	}
+	else{
+		$click_item = explode("|",$_COOKIE["click_item"]);
+		if(!in_array($_GET["item_id"], $click_item)){
+			setcookie("click_item",$_COOKIE["click_item"]."|".$_GET["item_id"]);
+			//$_COOKIE["click_item"] .= "|".$_GET["item_id"];
+		}
+		else{
+			$key = array_search($_GET["item_id"], $click_item);
+			unset($click_item[$key]);
+			$click_item = array_values($click_item);
+			$click_item[count($click_item)] = $_GET["item_id"];
+			setcookie("click_item",implode("|", $click_item));
+			//$_COOKIE["click_item"] .= implode("|", $click_item);
+		}
+	}
+	//echo "<script>alert(".$_COOKIE["click_item"].");</script>";
 ?>
 <div class="col-lg-12">
-	<div class="categoryBanner">這裡是商品名稱</div>
+	<div class="categoryBanner">商品 ITEMS</div>
 </div>
 <?
 	include_once("temp/nav.php");
@@ -62,15 +82,7 @@
 			?>
 			<button id="cart_button" id="add_cart_btn" type="button" class="btn btn-default" onclick="addtocart(<? echo $row["item_id"].",".$row["store_id"]; ?>);this.disabled='disabled';" <? if($disabled){echo "disabled";}?>></button>
 			<button id="collect_button" type="button" class="btn btn-default" onclick="addtocollect(<? echo $row["item_id"].",".$row["store_id"]; ?>);this.disabled='disabled';" <? if($_SESSION["user_id"]=="" || $row["collect"]!=null ||$row["user_id"]==$_SESSION["user_id"]){ echo "disabled";} ?>></button>
-			<button id="shop_button" type="button" class="btn btn-default" onclick="location.href='store_info.php?store_id=<? echo $row["store_id"]; ?>'"></button>
-			<!--<div class="seller_info">
-				<h4>卖家资料</h4>
-				<div class="item_logoWrapper">
-					<img src="update/store/<? echo $row["store_logo"]; ?>">
-				</div>
-				<p><? echo $row["store_name"]; ?></p>
-				<button type="button" class="btn btn-default" onclick="location.href='store_info.php?store_id=<? echo $row["store_id"]; ?>'"> 进入店家</button>
-			</div>-->
+			<button id="shop_button" type="button" class="btn btn-default" onclick="location.href='store_info.php?s_id=<? echo $row["store_id"]; ?>'"></button>
 			</div>
 		</div>
 	</div>
@@ -219,6 +231,45 @@
 		</div>
 	</div>
 	<?	}	?>
+		<div>
+			<div class="checkedItemName">
+					<img src="include/images/news_info_bar.png">
+					<h4>最新点选过的商品</h4>
+					<img src="include/images/news_info_bar.png">
+			</div>
+			<div class="checkedItem">
+				<div class='row'>
+				<?
+					if($_COOKIE["click_item"] != ""){
+						$click_item = explode("|",$_COOKIE["click_item"]);
+						for($i = count($click_item)-2 , $n = 0; $i >= 0 && $n < 6 ; --$i , ++$n){
+							$sql = "select a.item_id , a.item_name , a.item_price , a.item_photo , b.store_id ,b.store_name from item a
+							inner join store b on a.store_id = b.store_id
+							inner join category c on a.cate_id = c.cate_id
+							where a.item_state = 1 and a.item_id=".$click_item[$i];
+							$result = mysqli_query($sqli,$sql);
+							$row = mysqli_fetch_array($result);
+							$photo_img = explode("|" , $row["item_photo"]);
+				?>
+							<div class="col-xs-2 col-lg-2 split_six">
+							  <div class="merchandise_wrapper checked_wrapper">
+							    <a href="item_info.php?item_id=<? echo $row["item_id"]; ?>" class="thumbnail">
+							      <div class="imgOverflow split_four"><img src="update/item_s/<? echo $photo_img[0];?>" alt=""></div>
+							    </a>
+							    <!--<div class="caption">
+								    <p><h4><? echo $row["item_name"]; ?></h4></p>
+									<p><font class="storeName"><? echo $row["store_name"]; ?></font></p>
+									<img src="include/images/price.png"><h4><font class="item_price"><? echo $row["item_price"]; ?></font></h4>
+						      	</div>-->
+							  </div>
+							</div>
+				<?
+						}
+					}
+				?>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 <div class="modal fade" id="reply_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -239,31 +290,6 @@
   </div>
 </div>
 <script>
-	/*
-	$( document ).ready(function() {
-		if(isnull($.cookie('cart'))!=""){
-		  var cart = JSON.parse($.cookie('cart'));
-			for(var i = 0 ; i < cart.length ; ++ i ){
-				if('<? echo $row["store_id"];?>' == cart[i].store_id){
-					for(var n = 0 ; n < cart[i].item.length ; ++n)
-						if('<? echo $row["item_id"];?>' == cart[i].item[n])
-							$('#add_cart_btn').attr('disabled', true);
-				}
-			}
-	  }
-	});
-	*/
-	/* 150902
-	$( document ).ready(function() {
-		if($.cookie('cart')){
-		  var cart = $.cookie('cart');
-		  var temp = new Array();
-		  temp = cart.split("|");
-		  if($.inArray( "<? echo $row["item_id"];?>", temp ) > -1)
-		  	Dd("add_cart_btn").disabled = "disabled";
-	  }
-	});
-	*/
 	$('#captcha_reload').click(function(e){
 		$.get('ajax/captcha.php', function(url) {
 	    $('#captcha_img').attr('src', url);

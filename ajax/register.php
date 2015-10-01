@@ -16,8 +16,9 @@
 		}
 		else{
 			$updatedate = date("Y-m-d H:i:s");
-			$sql = "INSERT INTO user ( user_state, email, user_name , user_nick, user_pwd, user_sex, user_birthday, reg_time) 
-			VALUES ( '0' , '".$email."' , '".mysqli_real_escape_string($sqli,$_POST["user_name"])."' , '".mysqli_real_escape_string($sqli,$_POST["user_nick"])."' ,'".md5(md5($_POST["pwd"]))."','".$_POST["sex"]."','".$_POST["birth_y"]."-".$_POST["birth_m"]."-".$_POST["birth_d"]."','".$updatedate."')";
+			$sql = "INSERT INTO user ( user_state, email, user_name , user_nick, user_pwd, user_sex, user_birthday, city_code, user_addr, reg_time) 
+			VALUES ( '0' , '".$email."' , '".mysqli_real_escape_string($sqli,$_POST["user_name"])."' , '".mysqli_real_escape_string($sqli,$_POST["user_nick"])."' ,'".md5(md5($_POST["pwd"]))."','".$_POST["sex"]."','".$_POST["birth_y"]."-".$_POST["birth_m"]."-".$_POST["birth_d"]."'
+				,'".$_POST["city_code"]."' ,'".mysqli_real_escape_string($sqli,$_POST["user_addr"])."' ,'".$updatedate."')";
 			if(!mysqli_query($sqli,$sql)){
 				$_SESSION["errnumber"]=1;
 				$_SESSION["msg"]="注册帐号失败！";

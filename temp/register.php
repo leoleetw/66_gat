@@ -1,5 +1,7 @@
 <?
 	include_once("include/dbinclude.php");
+	include_once("include/captcha/simple-php-captcha.php");
+	$_SESSION['captcha'] = simple_php_captcha();
 ?>
 
 <div><!--has-success  has-error-->
@@ -79,8 +81,43 @@
 				<td><div id="pwd_check_div" class="form-group"><input type="password" class="form-control" id="pwd_check" name="pwdcheck" onchange="check_reg_input(this.id , this.value);"><font style="color:red;display:inline;" id="pwd_check_note"></font></div></td>
 			</tr>
 			<tr>
+
+				<td><label class="control-label" for="pwd_check">用戶類型</label></td>
+				<td><div id="pwd_check_div" class="form-group"><input type="password" class="form-control" id="pwd_check" name="pwdcheck" onchange="check_reg_input(this.id , this.value);"><font style="color:red;display:inline;" id="pwd_check_note"></font></div></td>
+			</tr>
+			<tr>
+
+				<td><label class="control-label" for="addr_check">居住地址（送货地址）</label></td>
+				<td>
+					<div id="pwd_addr_div" class="form-group">
+						<select id='city_area' name='city_area' class='form-control' style='width:20%;float:left;'>
+							<option value=''>请选择</option>
+							<?
+								$sql = "select * from city where city_rank = 1 order by city_id";
+								$result = mysqli_query($sqli,$sql);
+								while($row = mysqli_fetch_array($result)){
+									echo "<option value='".$row["city_id"]."'>".$row["city_name"]."</option>";
+								}
+							?>
+						</select>
+						<select id='city_code' name='city_code' class='form-control' style='width:20%;float:left;'>
+							<option value=''>请选择</option>
+						</select>
+						<input type="text" class="form-control" id="user_addr" name="user_addr" style='width:60%'>
+						<font style="color:red;display:inline;" id="pwd_check_note"></font>
+					</div>
+				</td>
+			</tr>
+			<tr>
 				<td><label class="control-label" for="captcha">验证码</label></td>
-				<td><div id="captcha_div" class="form-group"><input type="text" class="form-control" id="captcha" name="captcha" onchange="check_reg_input(this.id , this.value);"><font style="color:red;display:inline;" id="captcha_note"></font></div></td>
+				<td>
+					<div id="captcha_div" class="form-group">
+						<img id='captcha_img' src="<? echo $_SESSION['captcha']['image_src'];?>" alt="CAPTCHA" />
+						<img id='captcha_reload' src="include/images/reload.png" style="width:25px;">
+						<input type="text" class="form-control" id="captcha" name="captcha" onchange="check_reg_input(this.id , this.value);">
+						<font style="color:red;display:inline;" id="captcha_note"></font>
+						</div>
+				</td>
 			</tr>
 			<tr>
 				<td colspan='2' align='center'>
@@ -91,6 +128,35 @@
 		</table>
 	</form>
 <script>
+	$('#city_area').change(function(e){
+		if($('#city_area').val()!=""){
+			$.ajax({
+		      url: 'ajax/city.php',
+		      data: "action=get_city_code&city_area="+$('#city_area').val(),//$('#sentToBack').serialize()
+		      type:"POST",
+		      dataType:'JSON',
+
+		      success: function(myjson){
+		      	var str = "";
+		      	for(var i = 0 ; i < myjson.length ; ++i){
+		      		str += "<option value='"+myjson[i].city_id+"'>"+myjson[i].city_name+"</option>";
+		      	}
+		      	$('#city_code').html(str);
+		      },
+
+		      error:function(xhr, ajaxOptions, thrownError){
+					alert(xhr.status);
+					alert(thrownError);
+				}
+			});
+		}
+		
+	})
+	$('#captcha_reload').click(function(e){
+		$.get('ajax/captcha.php', function(url) {
+	    $('#captcha_img').attr('src', url);
+		});
+	})
 	function go_reg(){
 		if(Dd("birth_y").value==''||Dd("birth_m").value==''||Dd("birth_d").value==''){
 			Dd("birthday_div").className="form-group has-error";
@@ -122,13 +188,13 @@
 				Dd(this_id+"_note").innerHTML="＊email格式不符";
 			}
 			else{
-				str = "action=check&target="+this_id+"&value="+this_value;
-				$.ajax({
+			  str = "action=check&target="+this_id+"&value="+this_value;
+			  $.ajax({
 		      url: 'ajax/register.php',
 		      data: str,//$('#sentToBack').serialize()
 		      type:"POST",
 		      dataType:'text',
-		
+
 		      success: function(mytext){
 		      	  var arr = new Array();
 		      	  arr = mytext.split("|");
@@ -143,12 +209,12 @@
 		      	  else
 		      	  	alert(mytext);
 		      },
-		
-		       error:function(xhr, ajaxOptions, thrownError){ 
-		          alert(xhr.status); 
-		          alert(thrownError); 
-		       }
-	    	});
+
+		      error:function(xhr, ajaxOptions, thrownError){
+							alert(xhr.status);
+							alert(thrownError);
+					}
+				});
 			}
 		}
 		else if(this_id == 'pwd'){

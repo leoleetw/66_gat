@@ -32,9 +32,9 @@
 			$list[$i] = $row ;
 		echo json_encode($list);
 	}
-	else if($action == 'for_sell_score'){//��s����a����
+	else if($action == 'for_sell_score'){//§ó·sµ¹½æ®aµû¤À
 		$now = date("Y-m-d H:i:s");
-		$sql = "select * from score_recode where order_id =".$_POST["order_id"];
+		$sql = "select a.* , b.user_nick from score_recode a inner join user b on a.buy_user_id = b.user_id where a.order_id =".$_POST["order_id"];
 		$result = mysqli_query($sqli,$sql);
 		$row = mysqli_fetch_array($result);
 		$sql = "update score_recode set for_sell_score = '".$_POST["for_sell_score"]."' , for_sell_date = '".$now."' , for_sell_comment = '".$_POST["for_sell_comment"]."'  where order_id =".$_POST["order_id"];
@@ -68,6 +68,9 @@
 				mysqli_query($sqli,$sql);
 			}
 		}
+		$msg = $row["user_nick"]." 已对您的订单 ".$_POST["order_id"]." 做评价";
+		$url = "mystore_recode.php?action=score";
+		send_msg('system' , $row['sell_user_id'], $msg, $url , 1 );
 		echo "0|";
 	}
 	else if($action == "sell_get_score"){
@@ -101,9 +104,9 @@
 			$list[$i] = $row ;
 		echo json_encode($list);
 	}
-	else if($action == 'for_buy_score'){//��s���R�a����
+	else if($action == 'for_buy_score'){//§ó·sµ¹¶R®aµû¤À
 		$now = date("Y-m-d H:i:s");
-		$sql = "select * from score_recode where order_id =".$_POST["order_id"];
+		$sql = "select a.* , b.store_name from score_recode a inner join store b on a.sell_user_id = b.user_id where a.order_id =".$_POST["order_id"];
 		$result = mysqli_query($sqli,$sql);
 		$row = mysqli_fetch_array($result);
 		$sql = "update score_recode set for_buy_score = '".$_POST["for_buy_score"]."' , for_buy_date = '".$now."' , for_buy_comment = '".$_POST["for_buy_comment"]."'  where order_id =".$_POST["order_id"];
@@ -137,6 +140,9 @@
 				mysqli_query($sqli,$sql);
 			}
 		}
+		$msg = $row["store_name"]." 已对您的订单 ".$_POST["order_id"]." 做评价";
+		$url = "my_recode.php?action=score";
+		send_msg('system' , $row['buy_user_id'], $msg, $url , 0 );
 		echo "0|";
 	}
 ?>

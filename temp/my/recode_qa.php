@@ -76,7 +76,7 @@
 						str += "		<div class='qaPhoto_wrapper'><img src='update/item_s/"+item_photo[0]+"'></div>";
 						str += "		<font class='qaItemName'><a href='item_info.php?item_id="+myjson[i].item_id+"' target='_blank'>"+myjson[i].item_name+"</a></font>";
 						str += "	</div>";
-						str += "	<div class='col-lg-9 qaContent'>";
+						str += "	<div class='col-lg-9 qaContent qaBlueBorder'>";
 						str += "		<div class='qText'>";
 						str += "			<p>我的问题：<font class='qaDate'>"+myjson[i].q_creatdate+"</font></p>";
 						str += "			<p>"+myjson[i].q_content+"</p>";

@@ -288,7 +288,8 @@
 				$result = mysqli_query($sqli,$sql);
 				$row = mysqli_fetch_array($result);
 				$msg = "使用者 ".$row["user_nick"]." 在您的商品 ".$row["item_name"]." 上提出问题，赶紧帮助他解决疑惑吧";
-				send_msg('system' , $row['user_id'], $msg );
+				$url = "mystore_recode.php";
+				send_msg('system' , $row['user_id'], $msg, $url , 1 );
 				$_SESSION["errnumber"]=1;
 				$_SESSION["msg"]="成功提问问题！！";
 				header("Location: ../item_info.php?item_id=".$_POST["item_id"]);
@@ -320,7 +321,8 @@
 				$msg = "您向 ".$row["store_name"]." 店家的 ".$row["item_name"]." 商品发问的问题 对方已经给予回应罗，赶紧过去查看";
 			else
 				$msg = "您向 ".$row["store_name"]." 店家的 ".$row["item_name"]." 商品发问的问题 对方已经编辑回应罗，赶紧过去查看";
-			send_msg('system' , $row['user_id'], $msg );
+			$url = "my_recode.php";
+			send_msg('system' , $row['user_id'], $msg, $url , 0);
 			echo "0|";
 		}
 	}

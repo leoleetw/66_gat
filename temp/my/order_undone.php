@@ -67,7 +67,7 @@
 	      	}
 	      	str += "<tr><td class='blueTitle'>订单备注</td><td colspan='4'>"+myjson.rec_note+"</td></tr></table>";
 	      	str += "</div><div class='col-lg-4'><table class='table orderDetail_table'><tr><th colspan='2' class='blueTitle'>购买资讯</th></tr>";
-	      	str += "<tr><td colspan='2'>收件人︰"+myjson.rec_name+"<br>手机︰"+myjson.rec_mobile+"<br>收件地址︰"+myjson.rec_addr+"</td></tr>";
+	      	str += "<tr><td colspan='2'>收件人︰"+myjson.rec_name+"<br>手机︰"+myjson.rec_mobile+"<br>收件地址︰"+myjson.rec_city_area+myjson.rec_city_name+myjson.rec_addr+"</td></tr>";
 	      	str += "<tr><td class='blueTitle'>商品金额</td><td>";
 	      	if(myjson.total_item_price != myjson.edit_price)
 	      		str += myjson.edit_price+"（"+myjson.total_item_price+"）";

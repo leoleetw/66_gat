@@ -8,6 +8,14 @@
 	$result = mysqli_query($sqli,$sql);
 	$count = mysqli_num_rows($result);
 	$row = mysqli_fetch_array($result);
+	//购物车数量
+	$cart = json_decode( $_COOKIE["cart"] );
+	$cart_count = 0;
+	for($i = 0 ; $i < count($cart) ; ++$i){
+		for($item_count = 0 ; $item_count < count($cart[$i]->item) ; ++$item_count){
+			$cart_count++;
+		}
+	}
 	//最後一笔交易时间
 	$sql1 = "select a.end_date from `order` a inner join store b on a.store_id = b.store_id where (a.order_user_id = ".$_SESSION["user_id"].") AND a.order_state = 1 order by a.end_date DESC limit 0,1";
 	$result1 = mysqli_query($sqli,$sql1);
@@ -33,18 +41,73 @@
 	$result6 = mysqli_query($sqli,$sql6);
 	$count6 = mysqli_num_rows($result6);
 ?>
-<table class='table'>
+<div class="col-lg-12 my_index">
+	<div class="my_index_title">
+		<big>个</big><small>人专区</small><font>—购买纪录</font>
+		<a>
+			买入评价 :&nbsp;&nbsp;
+			<?	if($count == 0){?>
+				<img src="include/images/active_good.png">&nbsp;&nbsp; 0 &nbsp;&nbsp;&nbsp;&nbsp;<img src="include/images/active_bad.png">&nbsp;&nbsp; 0
+			<?	}else{?>
+				<img src="include/images/active_good.png">&nbsp;&nbsp; <? echo $row["buy_good_count"]; ?>&nbsp;&nbsp;&nbsp;&nbsp;<img src="include/images/active_bad.png">&nbsp;&nbsp; <? echo $row["buy_bad_count"]; ?>
+			<?	}	?>
+		</a>
+	</div>
+	<div class="row">
+		<div class="col-lg-4 undone_wrapper">
+			<div class="buy_undone_form blue_form_style">
+				<h4>购物车</h4>
+				<h3>
+					<? 
+						if($cart_count == 0)
+							echo $cart_count;
+						else{
+					?>
+					<a href='cart.php'><? echo $cart_count;?></a>
+					<?	}	?>
+				</h3>
+			</div>
+			<div class="buy_undone_form blue_form_style">
+				<h4>待付款</h4>
+				<h3><a href='my_order.php?action=undone'><? echo $count3;?></a></h3>
+			</div>
+			<div class="buy_undone_form blue_form_style">
+				<h4>待收货</h4>
+				<h3><? echo $count4;?></h3>
+			</div>
+			<div class="buy_undone_form blue_form_style">
+				<h4>待评价</h4>
+				<h3><a href='my_recode.php?action=score'><? echo $count6;?></a></h3>
+			</div>
+		</div>
+		<div class="col-lg-8 news_form blue_form_style">
+			<h4>所有消息</h4>
+			<?
+				$sql_msg = "select * from message where msg_to = ".$_SESSION["user_id"]." and msg_identity = 0 order by msg_date DESC limit 0,5";
+				$result_msg = mysqli_query($sqli,$sql_msg);
+				while($row_msg = mysqli_fetch_array($result_msg)){
+					if($row_msg["msg_url"]=="")
+						echo "<div class='row score_news'><div class='col-lg-4 news_date'>".str_replace(" ","，",$row_msg["msg_date"])."</div><div class='col-lg-8 news_text'>".$row_msg["msg_content"]."</div></div>";
+					else
+						echo "<div class='row score_news'><div class='col-lg-4 news_date'>".str_replace(" ","，",$row_msg["msg_date"])."</div><div class='col-lg-8 news_text'><a href='".$row_msg["msg_url"]."'>".$row_msg["msg_content"]."</a></div></div>";
+				}
+			?>
+		</div>
+	</div>
+</div>
+
+<!--table class='table'>
 	<tr><th>交易评价</th><th>最後一笔交易时间</th><th>待付款</th><th>待收货</th><th>待确认</th><th>待发货</th><th>待评价</th></tr>
 	<tr>
 		<td>
 			<?	if($count == 0){?>
-				<img src="include/images/active_good.png"> 0 <img src="include/images/active_bad.png"> 0 
+				<img src="include/images/active_good.png"> 0 <img src="include/images/active_bad.png"> 0
 			<?	}else{?>
-				<img src="include/images/active_good.png"> <? echo $row["buy_good_count"]; ?> <img src="include/images/active_bad.png"> <? echo $row["buy_bad_count"]; ?> 
+				<img src="include/images/active_good.png"> <? echo $row["buy_good_count"]; ?> <img src="include/images/active_bad.png"> <? echo $row["buy_bad_count"]; ?>
 			<?	}	?>
 		</td>
 		<td>
-			<? 
+			<?
 			$end_date = explode(" ", $row1["end_date"]);
 			echo $end_date[0];
 			?>
@@ -65,4 +128,4 @@
 			<a href='my_recode.php?action=score'><? echo $count6;?></a>
 		</td>
 	</tr>
-</table>
+</table-->

@@ -16,19 +16,25 @@
 			while($row = mysqli_fetch_array($result)){
 		?>
 				<div class="col-xs-6 col-lg-5">
-				  <div class="recommend_wrapper">
+				  <!--<div class="recommend_wrapper">
 				    <a href="rec_info.php?rec_id=<? echo $row["rec_id"]; ?>" class="thumbnail">
-				      <div class="imgOverflow split_four"><img src="update/recommend_s/<? echo $row["rec_cover"];?>" alt=""></div>
+				      <div class="imgOverflow split_two"><img src="update/recommend_s/<? echo $row["rec_cover"];?>" alt=""></div>
 				    </a>
 				    <h4><? echo $row["rec_title"];?></h4>
-				  </div>
-				</div>
+				  </div>-->
 
+				<div class="flr recommend_wrapper">
+        			<a href="rec_info.php?rec_id=<? echo $row["rec_id"]; ?>" class="thumbnail">
+	           			<div class="imgOverflow split_two"><img src="update/recommend_s/<? echo $row["rec_cover"];?>" alt="<? echo $row["rec_title"];?>" /></div>
+	            		<p class="link">■ <? echo $row["rec_title"];?></p>
+	       			</a>
+    			</div>
+				</div>
 		<?
 			}
 		?>
 		</div>
-		<button type="button" id="btn_recommend" name="" onclick="location.href='item_list.php?is_best=1'"></button>
+		<!--<button type="button" id="btn_recommend" name="" onclick="location.href='item_list.php?is_best=1'"></button>-->
 	</div>
 	<div class="itemBlock_Wrapper">
 		<div class="innerBlock_Wrapper">
@@ -62,7 +68,7 @@
 			}
 		?>
 		</div>
-		<button type="button" id="btn_newItems" name="" onclick="location.href='item_list.php?action=new'" ></button>
+		<button type="button" id="btn_newItems" name="" onclick="location.href='item_list.php?action=new'" >最新商品一览</button>
 	</div>
 	<div class="itemBlock_Wrapper">
 	<div class="innerBlock_Wrapper">
@@ -96,7 +102,7 @@
 			}
 		?>
 		</div>
-		<button type="button" id="btn_hotItems" name="" onclick="location.href='item_list.php?action=hot'"></button>
+		<button type="button" id="btn_hotItems" name="" onclick="location.href='item_list.php?action=hot'">热卖商品一览</button>
 	</div>
 	<div class="itemBlock_Wrapper">
 		<div id="news_info">

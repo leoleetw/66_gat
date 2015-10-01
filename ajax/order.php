@@ -38,8 +38,9 @@
 			$sqli->commit();
 			$sqli->autocommit(TRUE);
 			//运费计算尚未加入
-			$sql = "INSERT INTO `order` ( `order_user_id`, `store_id`, `total_item_price`, `edit_price`, `total_price`, `rec_name`, `rec_mobile`, `rec_addr`, `rec_note`, `creat_date`) VALUES 
-				( '".$_SESSION["user_id"]."', '".$_POST["store_id"]."', '".$_POST["total_price"]."', '".$_POST["total_price"]."', '".$_POST["total_price"]."', '".$_POST["rec_name"]."', '".$_POST["rec_mobile"]."', '".$_POST["rec_addr"]."', '".$_POST["rec_note"]."', '".$now."' )";
+			$sql = "INSERT INTO `order` ( `order_user_id`, `store_id`, `total_item_price`, `edit_price`, `total_price`, `rec_name`, `rec_mobile`, `rec_city_code`, `rec_addr`, `rec_note`, `creat_date`) VALUES 
+				( '".$_SESSION["user_id"]."', '".$_POST["store_id"]."', '".$_POST["total_price"]."', '".$_POST["total_price"]."', '".$_POST["total_price"]."', '".mysqli_real_escape_string($sqli, $_POST["rec_name"])."', '".mysqli_real_escape_string($sqli, $_POST["rec_mobile"])."',
+				 '".$_POST["rec_city_code"]."', '".mysqli_real_escape_string($sqli, $_POST["rec_addr"])."', '".mysqli_real_escape_string($sqli, $_POST["rec_note"])."', '".$now."' )";
 			$sqli->query($sql);
 			$order_id = $sqli->insert_id;
 			for($i = 0 ; $i < count($cart[$cart_indexof]->item) ; ++$i){
@@ -52,7 +53,8 @@
 				$sqli->query($sql);
 			}
 			$msg = "使用者 ".$_SESSION["user_nick"]." 已向你下定单，快去确认下吧！";
-			send_msg('system' , $row["user_id"], $msg );
+			$url = "mystore_order.php";
+			send_msg('system' , $row["user_id"], $msg, $url ,1);
 			
 			
 			unset($cart[$cart_indexof]);
@@ -70,14 +72,20 @@
 		$result = mysqli_query($sqli,$sql);
 		$row = mysqli_fetch_array($result);
 		$list = $row;
-		$list += Array('pay_state_font' => pay_state($row["pay_state"]),'item_state_font' => item_state($row["item_state"]));
+		$sql_area = "select city_name from city where city_id = '".substr($row["rec_city_code"],0,3)."000'";
+		$result_area = mysqli_query($sqli,$sql_area);
+		$row_area = mysqli_fetch_array($result_area);
+		$sql_city = "select city_name from city where city_id = '".$row["rec_city_code"]."'";
+		$result_city = mysqli_query($sqli,$sql_city);
+		$row_city = mysqli_fetch_array($result_city);
+		$list += Array('pay_state_font' => pay_state($row["pay_state"]),'item_state_font' => item_state($row["item_state"]),'rec_city_area' => $row_area["city_name"] , 'rec_city_name' => $row_city["city_name"]);
 		$item = Array();
 		$sql = "select * from order_item where order_id = ".$_POST["order_id"];
 		$result = mysqli_query($sqli,$sql);
-		for($i = 0 ; $i < $row = mysqli_fetch_array($result); ++$i )
+		for($i = 0 ; $i < $row = mysqli_fetch_array($result); ++$i ){
 			$item[$i] = $row;
+		}
 		$list += Array('item_info' => $item );
-		
 		echo json_encode($list);
 	}
 	else if($action == "order_change_price"){
@@ -97,7 +105,8 @@
 			$result = mysqli_query($sqli,$sql);
 			$row = mysqli_fetch_array($result);
 			$msg = "您有订单已被卖家确认，赶紧去订单专区查看缴费资讯，并於三天内完成缴费动作！";
-			send_msg('system' , $row["order_user_id"], $msg );
+			$url = "my_order.php";
+			send_msg('system' , $row["order_user_id"], $msg, $url ,0);
 			echo "0|";
 		}
 		

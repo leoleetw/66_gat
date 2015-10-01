@@ -43,7 +43,7 @@
 					}
 				?>
 				</ul>
-				<a href='item_list.php'> 全商品一览</a>
+				<a href='item_list.php'> 全部商品</a>
 
 			</div>
 			<div id="brand_info"><img src="include/images/brand.png"></div>

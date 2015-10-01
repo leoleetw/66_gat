@@ -6,13 +6,23 @@ body{font-family:Microsoft JhengHei;}
 .left_bar{width: 12px;height:90px;float: left;}
 	.gat_green{background: #466915;}
 	.gat_blue{background: #4a639a;}
+	.light_blue{background:#DCE5ED;}
+	.light_green{background:#e2ebe7;}
 .count_info{width: 340px;height:90px;background: #fff;float: left;}
+	.count_info h3{margin-left:10px;height:36px;margin-top:0;margin-bottom:0;font-weight:bold;}
+	.count_info h5{margin-left:10px;color:#999;height:40px;margin-top:0;margin-bottom:0;}
+	.count_info h6{
+		width:100%;
+		height:14px;
+		color:#999;
+		margin-left:10px;
+		margin-top:0;margin-bottom:0;
+	}
 .mynav_wrapper{float: right;}
 	.mynav{display: inline-block;vertical-align: top;margin-left: -3px;}
 	.navBorder{border-right:1px solid #cccccc;}
 	.navTop{
 		width: 120px;height:70px;
-		background: #e6e6e6;
 		color: #000;
 		padding:26px 0 0 28px;                                                                                           px;
 		font-size: 16px;
@@ -22,7 +32,6 @@ body{font-family:Microsoft JhengHei;}
 	.navBottom{
 		width: 120px;
 		height:20px;
-		background: #7d7e7d;
 		background: -webkit-linear-gradient(top, #1a1a1a 0%,#7d7e7d 100%);
 		background: -o-linear-gradient(top, #1a1a1a 0%,#7d7e7d 100%);
 		background: -ms-linear-gradient(top, #1a1a1a 0%,#7d7e7d 100%);
@@ -142,7 +151,7 @@ body{font-family:Microsoft JhengHei;}
 }
 .greenItemBtn{position: absolute;left:0px;z-index: 100;}
 	.greenItemBtn a{
-		background-image:url(../images/darkGreenBtn.png);
+		background-image:url(../images/greenBtn.png);
 		display: block;
 		width: 91px;
 		height:34px;
@@ -153,7 +162,7 @@ body{font-family:Microsoft JhengHei;}
 		padding: 6px 0 0 16px;
 	}
 	.greenItemBtn a:hover{
-		background-image:url(../images/greenBtn.png);
+		background-image:url(../images/darkGreenBtn.png);
 	}
 .keyIn_wrapper{
 	border-bottom:1px solid #c2cec8;
@@ -284,7 +293,7 @@ body{font-family:Microsoft JhengHei;}
 }
 .biueItemBtn{position: absolute;left:0px;z-index: 100;}
 	.biueItemBtn a{
-		background-image:url(../images/darkBlueBtn.png);
+		background-image:url(../images/blueBtn.png);
 		display: block;
 		width: 91px;
 		height:34px;
@@ -295,7 +304,7 @@ body{font-family:Microsoft JhengHei;}
 		padding: 6px 0 0 16px;
 	}
 	.biueItemBtn a:hover{
-		background-image:url(../images/blueBtn.png);
+		background-image:url(../images/darkBlueBtn.png);
 	}
 .recodeWrapper{padding:10px 4% 60px 4%;}
 	.recodeWrapper input[readonly]{
@@ -315,6 +324,7 @@ body{font-family:Microsoft JhengHei;}
 		padding:0;
 	}
 	.recodeWrapper .qa_button:hover{background:#333;}
+	.recodeWrapper .qa_button:focus{background:#333;border:none;box-shadow:none;}
 	.recodeWrapper select{background:none;border:none;}
 .qaWrapper{overflow:hidden;margin-top:20px;position:relative;margin-right:-20px;}
 	.qaPhoto_wrapper{
@@ -546,4 +556,31 @@ input.bad_radio:checked ~ label:before {
 .keyIn_wrapper_plus textarea{background:none;border:none;box-shadow:none;}
 .keyIn_wrapper_plus textarea:focus{box-shadow:none;}
 
-
+/**************************my/mystore index****************************/
+.my_index{background:#E6E6E6;padding:3%;}
+.score_area{padding:10px;margin-bottom:20px;overflow:hidden;margin-right:-15px;}
+	.my_index_title a{float:right;display:block;color:#999;}
+	.my_index_title big{font-size:32px;font-weight:bold;color:#4A639A;}
+	.my_index_title small{font-size:18px;font-weight:bold;color:#4A639A;}
+	.my_index_title font{font-size:18px;color:#999;}
+	.mystore_index_title a{float:right;display:block;color:#999;}
+	.mystore_index_title big{font-size:32px;font-weight:bold;color:#466915;}
+	.mystore_index_title small{font-size:18px;font-weight:bold;color:#466915;}
+	.mystore_index_title font{font-size:18px;color:#999;}
+	.undone_wrapper{margin-top:20px;}
+		.buy_undone_form{width:50%;height:100px;text-align:center;}
+		.sell_undone_form{width:33%;height:100px;text-align:center;}
+	.blue_form_style{outline:1px solid #ccc;float:left;background:#fff;}
+	.green_form_style{outline:1px solid #ccc;float:left;background:#fff;}
+		.blue_form_style h4{
+			text-align:center;background:#B8DCEC;height:30px;
+			margin-top:0;margin-bottom:0;padding-top:5px;
+		}
+		.green_form_style h4{
+			text-align:center;background:#BED6AE;height:30px;
+			margin-top:0;margin-bottom:0;padding-top:5px;
+		}
+	.news_form{max-height:320px;margin-top:20px;padding-bottom:16px;padding-left:0;padding-right:0;}
+		.score_news{padding:4px 20px;margin-top:6px;}
+		.news_date{color:#666;}
+		.news_text{border-bottom:1px dotted #ccc;color:#4A639A;}

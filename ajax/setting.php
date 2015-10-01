@@ -18,7 +18,8 @@
 			echo '0';
 	}
 	else if($action == "self"){
-		$sql = "update user set user_nick = '".mysqli_real_escape_string($sqli, $_POST["user_nick"])."',user_sex = '".$_POST["user_sex"]."',user_birthday = '".$_POST["birth_y"]."-".$_POST["birth_m"]."-".$_POST["birth_d"]."' where user_id = '".$_SESSION["user_id"]."'";
+		$sql = "update user set user_nick = '".mysqli_real_escape_string($sqli, $_POST["user_nick"])."',user_sex = '".$_POST["user_sex"]."',user_birthday = '".$_POST["birth_y"]."-".$_POST["birth_m"]."-".$_POST["birth_d"]."' 
+		,user_addr = '".mysqli_real_escape_string($sqli, $_POST["user_addr"])."' ,city_code = '".$_POST["city_code"]."' where user_id = '".$_SESSION["user_id"]."'";
 		$_SESSION["user_nick"] = $_POST["user_nick"];
 		if(!mysqli_query($sqli,$sql))
 			echo '1';

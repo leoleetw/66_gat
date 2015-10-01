@@ -5,8 +5,8 @@
 <div class="col-lg-12 bgWrapper">
 	<div class="row lightBlueBg">
 		<div class="biueItemBtn">
-			<a href="my_recode.php?action=qa" <? if($_GET["action"]=='qa'||$_GET["action"]==''){ echo "style='background-image: url(include/images/blueBtn.png);'";} ?> >问与答</a>
-			<a href="my_recode.php?action=score" <? if($_GET["action"]=='score'){ echo "style='background-image: url(include/images/blueBtn.png);'";} ?>>评价纪录</a>
+			<a href="my_recode.php?action=qa" <? if($_GET["action"]=='qa'||$_GET["action"]==''){ echo "style='background-image: url(include/images/darkBlueBtn.png);'";} ?> >问与答</a>
+			<a href="my_recode.php?action=score" <? if($_GET["action"]=='score'){ echo "style='background-image: url(include/images/darkBlueBtn.png);'";} ?>>评价纪录</a>
 		</div>
 
 <?
